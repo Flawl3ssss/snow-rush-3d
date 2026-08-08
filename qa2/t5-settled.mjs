@@ -1,0 +1,20 @@
+// Settled-state screenshots at 1fps headless: RESULTS + post-ЕЩЁ РАЗ AIM
+import { launch, waitMenu, URL, SHOT_DIR } from './common.mjs';
+const { browser, page, consoleErrors, pageErrors } = await launch({ width: 1280, height: 720 });
+await page.goto(URL, { waitUntil: 'domcontentloaded' });
+await waitMenu(page);
+await page.waitForTimeout(1500);
+await page.evaluate(() => window.__THREE_GAME_TEST_HOOKS__.startRun(1));
+await page.waitForFunction(() => window.__THREE_GAME_TEST_HOOKS__.getState().state === 'run', null, { timeout: 30000 });
+await page.waitForFunction(() => ['crash', 'finish', 'stopped', 'results'].includes(window.__THREE_GAME_TEST_HOOKS__.getState().state), null, { timeout: 300000 });
+await page.waitForFunction(() => window.__THREE_GAME_TEST_HOOKS__.getState().state === 'results', null, { timeout: 120000 });
+const endInfo = await page.evaluate(() => window.__THREE_GAME_TEST_HOOKS__.getState());
+await page.waitForTimeout(15000);
+await page.screenshot({ path: SHOT_DIR + '14-results-panel.png' });
+console.log('end:', JSON.stringify(endInfo));
+await page.locator('text=ЕЩЁ РАЗ').first().click();
+await page.waitForTimeout(20000);
+console.log('afterAgain:', await page.evaluate(() => window.__THREE_GAME_TEST_HOOKS__.getState().state));
+await page.screenshot({ path: SHOT_DIR + '17-again-aim-5s.png' });
+console.log(JSON.stringify({ consoleErrors, pageErrors }));
+await browser.close();

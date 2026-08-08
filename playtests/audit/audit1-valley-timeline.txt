@@ -1,0 +1,6 @@
+[28.6s] menu
+[50.3s] launch
+[57.0s] state: launch → run (dist=0, v=133км/ч)
+[114.4s] BOOST
+[308.1s] state: run → crash (dist=337, v=112км/ч)
+[316.8s] конец: state=crash dist=337

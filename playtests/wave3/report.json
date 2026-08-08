@@ -1,0 +1,26 @@
+{
+  "consoleErrors": [],
+  "pageErrors": [],
+  "checks": [
+    {
+      "name": "menu state",
+      "ok": true,
+      "note": "{\"state\":\"menu\"}"
+    },
+    {
+      "name": "run started",
+      "ok": true,
+      "note": "{\"state\":\"run\",\"speed\":27.798720158283615,\"dist\":13}"
+    },
+    {
+      "name": "run progresses/finishes",
+      "ok": true,
+      "note": "{\"state\":\"run\",\"dist\":82}"
+    },
+    {
+      "name": "high-level save loaded",
+      "ok": true,
+      "note": "{\"level\":1}"
+    }
+  ]
+}

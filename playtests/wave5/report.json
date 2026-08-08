@@ -1,0 +1,36 @@
+{
+  "consoleErrors": [],
+  "pageErrors": [],
+  "checks": [
+    {
+      "name": "desktop: фейковый переключатель качества удалён",
+      "ok": true,
+      "note": ""
+    },
+    {
+      "name": "desktop: нет перекрытий кнопок меню",
+      "ok": true,
+      "note": ""
+    },
+    {
+      "name": "phone-portrait: фейковый переключатель качества удалён",
+      "ok": true,
+      "note": ""
+    },
+    {
+      "name": "phone-portrait: нет перекрытий кнопок меню",
+      "ok": true,
+      "note": ""
+    },
+    {
+      "name": "phone-landscape: фейковый переключатель качества удалён",
+      "ok": true,
+      "note": ""
+    },
+    {
+      "name": "phone-landscape: нет перекрытий кнопок меню",
+      "ok": true,
+      "note": ""
+    }
+  ]
+}

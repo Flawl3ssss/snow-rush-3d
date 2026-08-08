@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.webm
+*.mp4
+playtests/frames/
+playtests/sheets/
+.DS_Store
+*.log

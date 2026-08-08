@@ -1,0 +1,411 @@
+{
+  "consoleErrors": [],
+  "pageErrors": [],
+  "states": [
+    {
+      "step": "desktop2-mid-run",
+      "state": "menu",
+      "distance": 0,
+      "speed": 0,
+      "speedKmh": 0,
+      "x": 0,
+      "steer": 0,
+      "pullPower": 0,
+      "coins": 150,
+      "crystals": 0,
+      "diamonds": 3,
+      "rockets": 1,
+      "playerLevel": 1,
+      "best": 0,
+      "finishDistance": 500,
+      "results": null
+    },
+    {
+      "step": "mobile-after-tap",
+      "state": "menu",
+      "distance": 0,
+      "speed": 0,
+      "speedKmh": 0,
+      "x": 0,
+      "steer": 0,
+      "pullPower": 0,
+      "coins": 150,
+      "crystals": 0,
+      "diamonds": 3,
+      "rockets": 1,
+      "playerLevel": 1,
+      "best": 0,
+      "finishDistance": 500,
+      "results": null
+    },
+    {
+      "step": "mobile-mid-run",
+      "state": "launch",
+      "distance": 0,
+      "speed": 0,
+      "speedKmh": 0,
+      "x": 0,
+      "steer": 0,
+      "pullPower": 1,
+      "coins": 150,
+      "crystals": 0,
+      "diamonds": 3,
+      "rockets": 1,
+      "playerLevel": 1,
+      "best": 0,
+      "finishDistance": 500,
+      "results": null
+    },
+    {
+      "step": "landscape-mid-run",
+      "state": "run",
+      "distance": 19,
+      "speed": 27.865343895629465,
+      "speedKmh": 100.31523802426608,
+      "x": 0,
+      "steer": 0,
+      "pullPower": 1,
+      "coins": 150,
+      "crystals": 0,
+      "diamonds": 3,
+      "rockets": 1,
+      "playerLevel": 1,
+      "best": 0,
+      "finishDistance": 500,
+      "results": null
+    }
+  ],
+  "pixels": {
+    "m1-menu": {
+      "width": 780,
+      "height": 1688,
+      "meanLum": 205.8,
+      "stdLum": 20.8,
+      "uniqueBuckets": 59,
+      "dominantShare": 0.25
+    },
+    "m3-run": {
+      "width": 780,
+      "height": 1688,
+      "meanLum": 200.3,
+      "stdLum": 32.1,
+      "uniqueBuckets": 147,
+      "dominantShare": 0.532
+    },
+    "l1-menu": {
+      "width": 844,
+      "height": 390,
+      "meanLum": 206.7,
+      "stdLum": 24.7,
+      "uniqueBuckets": 77,
+      "dominantShare": 0.25
+    },
+    "l2-run": {
+      "width": 844,
+      "height": 390,
+      "meanLum": 203,
+      "stdLum": 27.8,
+      "uniqueBuckets": 208,
+      "dominantShare": 0.553
+    },
+    "d1b-menu": {
+      "width": 1280,
+      "height": 800,
+      "meanLum": 188.5,
+      "stdLum": 52.2,
+      "uniqueBuckets": 207,
+      "dominantShare": 0.415
+    },
+    "d2b-aim": {
+      "width": 1280,
+      "height": 800,
+      "meanLum": 192,
+      "stdLum": 50.4,
+      "uniqueBuckets": 146,
+      "dominantShare": 0.461
+    },
+    "d4b-run": {
+      "width": 1280,
+      "height": 800,
+      "meanLum": 204.3,
+      "stdLum": 27.2,
+      "uniqueBuckets": 146,
+      "dominantShare": 0.553
+    },
+    "d5c-results": {
+      "width": 1280,
+      "height": 800,
+      "meanLum": 203.2,
+      "stdLum": 30.7,
+      "uniqueBuckets": 93,
+      "dominantShare": 0.535
+    }
+  },
+  "diagKeys": [
+    "state",
+    "renderer"
+  ],
+  "renderer": {
+    "note": "renderer/info unavailable",
+    "type": "object"
+  },
+  "rendererRun": {
+    "note": "renderer/info unavailable"
+  },
+  "lilGuiNoFlag": false,
+  "lilGuiDebugFlag": true,
+  "flow": [
+    {
+      "step": "menu",
+      "state": "menu",
+      "distance": 0,
+      "speed": 0,
+      "coins": 150,
+      "best": 0
+    },
+    {
+      "step": "click-tap-to-play",
+      "state": "menu",
+      "distance": 0,
+      "speed": 0,
+      "coins": 150,
+      "best": 0
+    },
+    {
+      "step": "pulling",
+      "state": "menu",
+      "distance": 0,
+      "speed": 0,
+      "coins": 150,
+      "best": 0
+    },
+    {
+      "step": "after-release",
+      "state": "aim",
+      "distance": 0,
+      "speed": 0,
+      "coins": 150,
+      "best": 0
+    },
+    {
+      "step": "mid-run",
+      "state": "aim",
+      "distance": 0,
+      "speed": 0,
+      "coins": 150,
+      "best": 0
+    },
+    {
+      "step": "run-end",
+      "results": null
+    },
+    {
+      "step": "results-visible",
+      "state": "aim",
+      "distance": 0,
+      "speed": 0,
+      "coins": 150,
+      "best": 0
+    },
+    {
+      "step": "restart-run",
+      "state": "launch",
+      "distance": 0,
+      "speed": 0,
+      "coins": 150,
+      "best": 0
+    },
+    {
+      "step": "esc-pause",
+      "state": "pause",
+      "distance": 0,
+      "speed": 23.6,
+      "coins": 150,
+      "best": 0
+    },
+    {
+      "step": "esc-resume",
+      "state": "run",
+      "distance": 2,
+      "speed": 23.6,
+      "coins": 150,
+      "best": 0
+    },
+    {
+      "step": "mobile-tap-at-620",
+      "state": "aim"
+    }
+  ],
+  "consoleErrors2": [],
+  "pageErrors2": [],
+  "rendererRun2": {
+    "calls": 508,
+    "triangles": 50214,
+    "geometries": 499,
+    "textures": 2
+  },
+  "flow4": [
+    {
+      "step": "click-on-tap-text",
+      "state": "aim",
+      "distance": 0,
+      "speed": 0,
+      "pullPower": 0,
+      "coins": 150,
+      "best": 0
+    },
+    {
+      "step": "pulling-full",
+      "state": "aim",
+      "distance": 0,
+      "speed": 0,
+      "pullPower": 1,
+      "coins": 150,
+      "best": 0
+    },
+    {
+      "step": "after-release",
+      "state": "launch",
+      "distance": 0,
+      "speed": 0,
+      "pullPower": 1,
+      "coins": 150,
+      "best": 0
+    },
+    {
+      "step": "mid-run",
+      "state": "run",
+      "distance": 13,
+      "speed": 27.9,
+      "pullPower": 1,
+      "coins": 150,
+      "best": 0
+    },
+    {
+      "step": "run-end",
+      "state": "crash",
+      "distance": 121,
+      "endResults": null
+    },
+    {
+      "step": "results-visible",
+      "state": "crash",
+      "distance": 121,
+      "speed": 26.9,
+      "pullPower": 1,
+      "coins": 150,
+      "best": 0
+    }
+  ],
+  "consoleErrors4": [],
+  "pageErrors4": [],
+  "rendererActiveRun": {
+    "calls": 488,
+    "triangles": 49528,
+    "geometries": 499,
+    "textures": 2
+  },
+  "persistence": {
+    "bestBeforeReload": 0,
+    "afterReload": {
+      "best": 0,
+      "coins": 150,
+      "playerLevel": 1
+    }
+  },
+  "flow5": [
+    {
+      "t": 1.2,
+      "state": "launch",
+      "distance": 0
+    },
+    {
+      "t": 4.3,
+      "state": "run",
+      "distance": 0
+    }
+  ],
+  "consoleErrors5": [],
+  "pageErrors5": [],
+  "crashToResultsMs": null,
+  "resultsSnapshot": {
+    "state": "run",
+    "distance": 347,
+    "best": 0,
+    "coins": 150,
+    "results": null
+  },
+  "persistence2": {
+    "afterReload": {
+      "best": 0,
+      "coins": 150,
+      "playerLevel": 1,
+      "rockets": 1
+    }
+  },
+  "flow6": [
+    {
+      "t": 1.3,
+      "state": "launch",
+      "distance": 0
+    },
+    {
+      "t": 4.3,
+      "state": "run",
+      "distance": 0
+    },
+    {
+      "t": 218.1,
+      "state": "crash",
+      "distance": 485
+    },
+    {
+      "t": 228.4,
+      "state": "results",
+      "distance": 485
+    }
+  ],
+  "consoleErrors6": [],
+  "pageErrors6": [],
+  "resultsFinal": {
+    "distance": 485,
+    "best": 485,
+    "coins": 222,
+    "results": {
+      "distance": 485,
+      "best": 485,
+      "isNewBest": true,
+      "finished": false,
+      "crashed": true,
+      "crashFree": false,
+      "coinsCollected": 34,
+      "crystalsCollected": 0,
+      "diamondsCollected": 0,
+      "coinsEarned": 72,
+      "crystalsEarned": 0,
+      "diamondsEarned": 0,
+      "xpEarned": 121,
+      "levelUps": []
+    }
+  },
+  "resultsButtons": [
+    "КУПИТЬ · 2◆",
+    "100 ⬤",
+    "100 ⬤",
+    "150 ⬤",
+    "BACK",
+    "×1",
+    "ЕЩЁ РАЗ",
+    "АПГРЕЙДЫ",
+    "В МЕНЮ",
+    "ПРОДОЛЖИТЬ",
+    "ЗАНОВО",
+    "В МЕНЮ"
+  ],
+  "afterRetryClick": "aim",
+  "persistence3": {
+    "best": 485,
+    "coins": 222,
+    "playerLevel": 1
+  }
+}

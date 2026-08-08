@@ -1,0 +1,11 @@
+import { chromium } from '/home/kimi/.npm-global/lib/node_modules/playwright/index.mjs';
+const browser = await chromium.launch({ args: ['--enable-unsafe-swiftshader'] });
+const page = await browser.newPage({ viewport: { width: 480, height: 480 } });
+page.on('response', (r) => { if (r.status() >= 400) console.log('404:', r.url()); });
+page.on('pageerror', (e) => console.log('ERR', e.message.slice(0, 300)));
+await page.goto('http://127.0.0.1:5191/assetlab/viewer.html?src=/assetlab/glb/penguin.glb', { waitUntil: 'networkidle' });
+await page.waitForTimeout(4000);
+console.log('done =', await page.evaluate('window.__done'));
+console.log('names =', JSON.stringify(await page.evaluate('window.__names')));
+await page.screenshot({ path: 'shots/debug.png' });
+await browser.close();

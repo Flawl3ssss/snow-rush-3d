@@ -1,0 +1,16 @@
+{
+  "consoleErrors": [],
+  "pageErrors": [],
+  "checks": [
+    {
+      "name": "airborne frame captured",
+      "ok": true,
+      "note": ""
+    },
+    {
+      "name": "boost activated",
+      "ok": true,
+      "note": "{\"boosting\":true,\"rockets\":0}"
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+ "penguin": {
+  "id": "dLdYN_-2dlE",
+  "url": "https://static.poly.pizza/a3fb361a-9725-4178-b57c-c781fa7a7dbe.glb",
+  "author": "Peppermint Penguin",
+  "license": "CC-BY"
+ },
+ "penguin_alt": {
+  "id": "fBXvsC6pe_V",
+  "url": "https://static.poly.pizza/f242d6d3-67cd-41b4-ae93-4cfd0acf8b5e.glb",
+  "author": "Poly by Google",
+  "license": "CC-BY"
+ },
+ "tube_flamingo": {
+  "id": "3xMFo1NeFvx",
+  "url": "https://static.poly.pizza/8eac707a-eea2-4a81-ad46-64fc973a5f78.glb",
+  "author": "Franco Ricci",
+  "license": "CC-BY"
+ },
+ "pine_snow": {
+  "id": "17vQv2X5rh",
+  "url": "https://static.poly.pizza/1e077c40-f8df-4322-9faf-964faecc5860.glb",
+  "author": "Quaternius",
+  "license": "CC0"
+ },
+ "pine_snow2": {
+  "id": "3pWKPFASEn-",
+  "url": "https://static.poly.pizza/c31a676b-01da-4743-9556-9f95694be3d2.glb",
+  "author": "Chris Lee",
+  "license": "CC-BY"
+ },
+ "snowy_trees": {
+  "id": "4yANmlVa-5p",
+  "url": "https://static.poly.pizza/e7bdea52-18da-4c4d-955d-363af4cd9cdd.glb",
+  "author": "Daniel Melchior",
+  "license": "CC-BY"
+ },
+ "dead_trees": {
+  "id": "iEuwXWner0",
+  "url": "https://static.poly.pizza/a0358f4f-8165-41d9-a902-29b6eadfeeb0.glb",
+  "author": "dook",
+  "license": "CC-BY"
+ },
+ "rocks": {
+  "id": "OQvi8PIZ40",
+  "url": "https://static.poly.pizza/c6f65def-08c5-4c81-b17f-f37b171ad911.glb",
+  "author": "Quaternius",
+  "license": "CC0"
+ },
+ "boulder_snow": {
+  "id": "3jql0qtape-",
+  "url": "https://static.poly.pizza/f86184fd-43a0-409a-b7f6-f5115e85ef2e.glb",
+  "author": "Poly by Google",
+  "license": "CC-BY"
+ },
+ "snowman": {
+  "id": "562IGbxkrTC",
+  "url": "https://static.poly.pizza/9c344cd5-ea67-42fd-8a86-0df2d198bd4b.glb",
+  "author": "snowman2",
+  "license": "CC-BY"
+ },
+ "igloo": {
+  "id": "6k656rJhVzY",
+  "url": "https://static.poly.pizza/62cd5d5e-b9fd-4d48-b235-b1a35e99c3e6.glb",
+  "author": "Poly by Google",
+  "license": "CC-BY"
+ },
+ "flag": {
+  "id": "FuOkF3WBrx",
+  "url": "https://static.poly.pizza/4cd7e950-9c30-4005-8a7d-81b4d555715e.glb",
+  "author": "Quaternius",
+  "license": "CC0"
+ },
+ "coin": {
+  "id": "QHZtj94fvh",
+  "url": "https://static.poly.pizza/c4492ad6-e885-486d-b595-22d66dbe95ee.glb",
+  "author": "Quaternius",
+  "license": "CC0"
+ },
+ "gem": {
+  "id": "09p9-Mnp4Sc",
+  "url": "https://static.poly.pizza/0b68a994-3714-445b-a85c-2cc3718282ab.glb",
+  "author": "gem",
+  "license": "CC-BY"
+ },
+ "crystal": {
+  "id": "WzWPKHFMkL",
+  "url": "https://static.poly.pizza/75211364-db9b-4004-8e35-18031f096da1.glb",
+  "author": "iPoly3D",
+  "license": "CC0"
+ },
+ "slingshot": {
+  "id": "9cNT9Ng4ruE",
+  "url": "https://static.poly.pizza/9c7569c3-8cbe-4a89-9727-826529328d14.glb",
+  "author": "Jarlan Perez",
+  "license": "CC-BY"
+ },
+ "rocket": {
+  "id": "ah8WSBbizA6",
+  "url": "https://static.poly.pizza/61b5e7bf-f85d-415e-9d0c-beed1dbfa345.glb",
+  "author": "jeremy",
+  "license": "CC-BY"
+ },
+ "chest": {
+  "id": "haqf9qoiOG",
+  "url": "https://static.poly.pizza/bec58c2b-89ea-4c99-8ffe-47214f2fe4f9.glb",
+  "author": "Quaternius",
+  "license": "CC0"
+ },
+ "cabin": {
+  "id": "2EJuFq6kjTK",
+  "url": "https://static.poly.pizza/d45419a5-7d90-4eed-80bf-5b2b86cf824b.glb",
+  "author": "Jakers_H",
+  "license": "CC-BY"
+ },
+ "iceberg": {
+  "id": "8sqTOfIjWml",
+  "url": "https://static.poly.pizza/ab6f30ba-ff00-4c27-8c67-b26699473902.glb",
+  "author": "S. Paul Michael",
+  "license": "CC-BY"
+ },
+ "torch": {
+  "id": "Gq38E7hFZw",
+  "url": "https://static.poly.pizza/0dcdbabb-629d-4eee-af16-7c49f6ba6e5e.glb",
+  "author": "Quaternius",
+  "license": "CC0"
+ }
+}

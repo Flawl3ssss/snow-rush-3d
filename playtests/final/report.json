@@ -1,0 +1,118 @@
+{
+  "startedAt": "2026-08-07T17:36:40.956Z",
+  "consoleErrors": [],
+  "pageErrors": [],
+  "musicRequests": [
+    "run-loop.mp3",
+    "run-valley.mp3",
+    "menu-loop.mp3",
+    "run-canyon.mp3",
+    "run-aurora.mp3",
+    "run-caves.mp3",
+    "run-volcano.mp3"
+  ],
+  "checks": [
+    {
+      "name": "загрузка в меню",
+      "ok": true,
+      "note": "state=menu"
+    },
+    {
+      "name": "запуск valley → run",
+      "ok": true,
+      "note": "state=run v=49.6"
+    },
+    {
+      "name": "пауза по Escape",
+      "ok": true,
+      "note": "state=pause"
+    },
+    {
+      "name": "резюме по Escape",
+      "ok": true,
+      "note": "state=run"
+    },
+    {
+      "name": "заезд завершился результатами",
+      "ok": true,
+      "note": "state=results dist=237"
+    },
+    {
+      "name": "пейлоад результатов заполнен",
+      "ok": true,
+      "note": "dist=237 coins=undefined"
+    },
+    {
+      "name": "селектор: canyon выбран",
+      "ok": true,
+      "note": ""
+    },
+    {
+      "name": "заезд canyon стартовал",
+      "ok": true,
+      "note": "state=run"
+    },
+    {
+      "name": "музыка биома canyon",
+      "ok": true,
+      "note": "run-canyon.mp3"
+    },
+    {
+      "name": "селектор: aurora выбран",
+      "ok": true,
+      "note": ""
+    },
+    {
+      "name": "заезд aurora стартовал",
+      "ok": true,
+      "note": "state=run"
+    },
+    {
+      "name": "музыка биома aurora",
+      "ok": true,
+      "note": "run-aurora.mp3"
+    },
+    {
+      "name": "селектор: caves выбран",
+      "ok": true,
+      "note": ""
+    },
+    {
+      "name": "заезд caves стартовал",
+      "ok": true,
+      "note": "state=run"
+    },
+    {
+      "name": "музыка биома caves",
+      "ok": true,
+      "note": "run-caves.mp3"
+    },
+    {
+      "name": "селектор: volcano выбран",
+      "ok": true,
+      "note": ""
+    },
+    {
+      "name": "заезд volcano стартовал",
+      "ok": true,
+      "note": "state=run"
+    },
+    {
+      "name": "музыка биома volcano",
+      "ok": true,
+      "note": "run-volcano.mp3"
+    },
+    {
+      "name": "ноль console errors",
+      "ok": true,
+      "note": ""
+    },
+    {
+      "name": "ноль page errors",
+      "ok": true,
+      "note": ""
+    }
+  ],
+  "finishedAt": "2026-08-07T17:41:07.108Z",
+  "pass": true
+}

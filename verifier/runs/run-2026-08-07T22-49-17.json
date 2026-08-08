@@ -1,0 +1,116 @@
+{
+  "ts": "2026-08-07T22:49:17",
+  "file": "/mnt/agents/output/Промт_доработки_SNOW_RUSH_3D.md",
+  "words": 1642,
+  "all_pass": true,
+  "checks": [
+    {
+      "id": "p1_research",
+      "desc": "исследования/скиллы/плейтесты",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "p2_ui",
+      "desc": "UI-аудит + фейковый переключатель графики",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "p3_economy",
+      "desc": "экономика по исследованиям",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "p4_models",
+      "desc": "3D-модели детальнее",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "p5_anim",
+      "desc": "анимации: полёт/ветер/нитро",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "p6_five_maps",
+      "desc": "минимум 5 карт",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "p7_world_fix",
+      "desc": "висячие элементы/невидимые камни",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "p8_penguin",
+      "desc": "разворот пингвина",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "p9_launch",
+      "desc": "кривой запуск с рогатки",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "p10_upgrade_visual",
+      "desc": "визуальная эволюция при апгрейде",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "p11_action",
+      "desc": "динамика/экшен",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "p12_tracks",
+      "desc": "карты: спуски/подъёмы/повороты",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "p13_selfqa",
+      "desc": "самостоятельный поиск багов",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "p14_own",
+      "desc": "собственные улучшения каждого пункта",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "workflow",
+      "desc": "воркфлоу: plan.md + этапы",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "dod",
+      "desc": "критерии приёмки (DoD)",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "context",
+      "desc": "контекст проекта (пути/ветки)",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "length",
+      "desc": "объём ≥ 600 слов",
+      "pass": true,
+      "detail": "words=1642"
+    }
+  ]
+}

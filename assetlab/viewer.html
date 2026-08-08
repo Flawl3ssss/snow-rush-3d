@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>body{margin:0;background:linear-gradient(#8fb8dd,#dfe9f2)}</style>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+</head>
+<body>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from './vendor/GLTFLoader.js';
+
+const q = new URLSearchParams(location.search);
+const src = q.get('src');
+const hide = (q.get('hide') || '').split(',').filter(Boolean).map(Number);
+const only = (q.get('only') || '').split(',').filter(Boolean).map(Number);
+const az = Number(q.get('az') || 0.6);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setSize(480, 480);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.add(new THREE.HemisphereLight(0xcfe5ff, 0x8a7f70, 1.1));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2);
+sun.position.set(3, 6, 4);
+scene.add(sun);
+
+const cam = new THREE.PerspectiveCamera(35, 1, 0.01, 500);
+
+new GLTFLoader().load(src, (g) => {
+  const root = g.scene;
+  const kids = root.children.slice();
+  if (only.length) kids.forEach((k, i) => { if (!only.includes(i)) k.visible = false; });
+  if (hide.length) kids.forEach((k, i) => { if (hide.includes(i)) k.visible = false; });
+
+  const box = new THREE.Box3().setFromObject(root);
+  const size = box.getSize(new THREE.Vector3());
+  const s = 2 / Math.max(size.x, size.y, size.z);
+  root.scale.setScalar(s);
+  const box2 = new THREE.Box3().setFromObject(root);
+  root.position.y -= box2.min.y;
+  root.position.x -= (box2.min.x + box2.max.x) / 2;
+  root.position.z -= (box2.min.z + box2.max.z) / 2;
+  scene.add(root);
+
+  const names = [];
+  root.traverse((o) => { if (o.isMesh) names.push(o.name + ':' + (o.geometry.index ? o.geometry.index.count / 3 : o.geometry.attributes.position.count / 3)); });
+  window.__names = names;
+
+  const r = 3.2;
+  cam.position.set(Math.sin(az) * r, 1.6, Math.cos(az) * r);
+  cam.lookAt(0, 0.9, 0);
+  renderer.render(scene, cam);
+  window.__done = true;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+[31.3s] menu
+[51.0s] aim
+[137.9s] end state=run
+
+CONSOLE:
+[warning] [.WebGL-0x2bfc00104800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+[warning] [.WebGL-0x2bfc00104800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+[warning] [.WebGL-0x2bfc00104800] GL_INVALID_VALUE: glTexSubImage2DRobustANGLE: Offset overflows texture dimensions.
+[warning] [.WebGL-0x2bfc00104800] GL_INVALID_VALUE: glTexSubImage2DRobustANGLE: Offset overflows texture dimensions.
+[warning] [.WebGL-0x2bfc00104800] GL_INVALID_VALUE: glTexSubImage2DRobustANGLE: Offset overflows texture dimensions.
+[warning] [.WebGL-0x2bfc00104800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+[warning] [.WebGL-0x2bfc00104800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
