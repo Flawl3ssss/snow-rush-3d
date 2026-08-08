@@ -239,7 +239,7 @@ export class AudioSystem {
     const buf = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * dur), ctx.sampleRate);
     const data = buf.getChannelData(0);
     for (let i = 0; i < data.length; i += 1) {
-      data[i] = (this.rng() * 2 - 1) * (1 - i / data.length);
+      data[i] = (this.rng.next() * 2 - 1) * (1 - i / data.length);
     }
     const src = ctx.createBufferSource();
     src.buffer = buf;

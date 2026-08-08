@@ -47,7 +47,7 @@ export class Slingshot {
       frame.updateMatrixWorld(true);
 
       // Карман модели — самый маленький меш (тёмная кожаная чаша)
-      let pouch: THREE.Mesh | null = null;
+      let pouch: THREE.Mesh | undefined;
       let pouchVol = Infinity;
       frame.traverse((o) => {
         const mesh = o as THREE.Mesh;
@@ -57,13 +57,14 @@ export class Slingshot {
         const vol = size.x * size.y * size.z;
         if (vol < pouchVol) {
           pouchVol = vol;
-          pouch = mesh;
+          pouch = mesh as THREE.Mesh;
         }
       });
-      if (pouch) {
-        this.glbPouch = pouch;
-        this.glbPouchRest.copy(pouch.position);
-        const box = new THREE.Box3().setFromObject(pouch);
+      if (pouch !== undefined) {
+        const pouchObj: THREE.Object3D = pouch;
+        this.glbPouch = pouchObj;
+        this.glbPouchRest.copy(pouchObj.position);
+        const box = new THREE.Box3().setFromObject(pouchObj);
         const center = box.getCenter(new THREE.Vector3());
         // Герой сидит В кармане: низ тюбинга утоплен в чашу
         this.pocketRest.copy(center).add(new THREE.Vector3(0, -0.22, 0.1));

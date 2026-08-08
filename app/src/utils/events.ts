@@ -43,6 +43,12 @@ export interface GameEvents {
   finish: { distance: number };
   jump: {};
   land: {};
+  /** W3: мягкое приземление (угол полёта ≈ уклону склона) — мини-буст скорости. */
+  land_clean: {};
+  /** W3: жёсткое приземление (мismatch > 30°) — усиленная потеря скорости. */
+  land_hard: {};
+  /** W3: вылет с гребня (crest-launch) — земля резко укручивается под райдером. */
+  crest_jump: { strength: number };
   boost_started: { rocketsLeft: number };
   boost_ended: {};
   upgrade_purchased: { line: UpgradeLine; level: number; cost: number };

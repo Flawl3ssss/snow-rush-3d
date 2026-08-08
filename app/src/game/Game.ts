@@ -301,7 +301,7 @@ export class Game {
         const v = this.session?.v ?? 12;
         this.crashImpactV = v;
         // длительность сцены ∝ скорости удара (research W3: 2–4 с), slow-mo после hit-stop
-        this.crashDuration = clamp(1.5 + v * 0.07, 2.0, 4.0);
+        this.crashDuration = clamp(1.5 + this.crashImpactV * 0.07, 2.0, 4.0);
         this.crashSlowMo = 0.7;
         this.tube.startTumble(clamp(v / 30, 0.3, 1));
         this.screens.hud.fadeOut();
