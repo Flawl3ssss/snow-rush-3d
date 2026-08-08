@@ -746,6 +746,7 @@ export class Game {
       this.session?.vx ?? 0,
       this.session?.v ?? 0,
       this.state === 'run' || this.state === 'finish' ? this.track.headingAt(this.session?.s ?? 0) : 0,
+      this.session?.airborne ?? false,
     );
     this.shake.update(delta, this.renderer.camera);
     this.tweens.update(delta);

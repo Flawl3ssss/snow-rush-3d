@@ -68,6 +68,7 @@ export class CameraRig {
     vx: number,
     speed: number,
     heading: number,
+    airborne: boolean = false,
   ): void {
     const bobAmp = this.reducedMotion ? 0 : CAMERA.menuBobAmp;
     const bob = Math.sin(time * CAMERA.menuBobHz * Math.PI * 2) * bobAmp;
@@ -87,6 +88,7 @@ export class CameraRig {
       const k = damp(CAMERA.posLag, delta);
       this.camera.position.lerp(this.desiredPos, k);
       this.smoothedLook.lerp(this.lookTarget, damp(CAMERA.lookLag, delta));
+      this.rollTarget = 0;
     } else if (this.mode === 'finish') {
       this.finishBlend = Math.min(1, this.finishBlend + delta / CAMERA.finish.duration);
       this.desiredPos.set(
@@ -97,6 +99,7 @@ export class CameraRig {
       this.lookTarget.copy(playerPos);
       this.camera.position.lerp(this.desiredPos, damp(4, delta));
       this.smoothedLook.lerp(this.lookTarget, damp(6, delta));
+      this.rollTarget = 0;
     } else {
       this.finishBlend = 0;
       // целевая позиция = игрок + (0, 4.2, 7.8) в локальных осях движения
@@ -132,16 +135,23 @@ export class CameraRig {
     }
 
     this.camera.lookAt(this.smoothedLook);
+    // W5: плавный крен камеры (rollTarget задаётся в run-ветке, иначе 0)
+    this.roll = lerp(this.roll, this.rollTarget, damp(6, delta));
+    this.camera.rotation.z += this.roll;
 
     // --- FOV ---
     if (this.fovPunch > 0.001) {
       this.fovPunch *= Math.exp(-delta / CAMERA.fovPunchTau);
       if (this.fovPunch < 0.001) this.fovPunch = 0;
     }
-    const speedFov =
-      this.mode === 'run' ? clamp((speed - CAMERA.fovSpeedStart) * CAMERA.fovSpeedMul, 0, CAMERA.fovSpeedMax) : 0;
+    const speedFovTarget =
+      this.mode === 'run'
+        ? clamp((speed - CAMERA.fovSpeedStart) * CAMERA.fovSpeedMul, 0, CAMERA.fovSpeedMax) +
+          (airborne ? CAMERA.airFovBonus : 0)
+        : 0;
+    this.speedFovSm = lerp(this.speedFovSm, speedFovTarget, damp(CAMERA.fovSpeedDamp, delta));
     const finishFov = this.mode === 'finish' ? CAMERA.finish.fovDelta * this.finishBlend : 0;
-    this.camera.fov = this.baseFov + speedFov + this.fovPunch + finishFov;
+    this.camera.fov = this.baseFov + this.speedFovSm + this.fovPunch + finishFov;
     this.camera.updateProjectionMatrix();
   }
 
