@@ -149,7 +149,8 @@ export class AssetLib {
         const m = (o as THREE.Mesh).material as THREE.MeshStandardMaterial;
         if (m && 'roughness' in m) {
           m.roughness = Math.min(0.95, Math.max(0.5, m.roughness ?? 0.9));
-          m.metalness = Math.min(m.metalness ?? 0, 0.15);
+          // W6 §3.3: кап поднят с 0.15 — с PMREM металл в GLB больше не чёрный
+          m.metalness = Math.min(m.metalness ?? 0, 0.45);
         }
       }
     });

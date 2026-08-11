@@ -78,7 +78,8 @@ function makePickupMesh(kind: PickupKind): { obj: THREE.Object3D; materials: THR
         if (kind !== 'coin') c.color.multiply(tint); // самоцвет → розовый/циан
         c.emissive = emissive.clone();
         c.emissiveIntensity = kind === 'coin' ? 0.25 : 0.35;
-        c.metalness = kind === 'coin' ? 0.4 : 0.1;
+        // W6 §3.3: с PMREM-окружением золото больше не чернеет
+        c.metalness = kind === 'coin' ? 0.85 : 0.15;
         c.roughness = kind === 'coin' ? 0.35 : 0.25;
         materials.push(c);
         return c;
@@ -96,7 +97,7 @@ function makePickupMesh(kind: PickupKind): { obj: THREE.Object3D; materials: THR
   };
   if (kind === 'coin') {
     params.roughness = 0.35;
-    params.metalness = 0.4;
+    params.metalness = 0.85; // W6 §3.3
     params.emissive = new THREE.Color(COLORS.coinGoldDark);
     params.emissiveIntensity = 0.25;
   } else if (kind === 'crystal') {

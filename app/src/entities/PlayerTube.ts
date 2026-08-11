@@ -142,7 +142,7 @@ export class PlayerTube {
     }
 
     // тир 2: два металлических полозя снизу («санки»)
-    const skidMat = new THREE.MeshStandardMaterial({ color: 0xc9d6e8, flatShading: true, roughness: 0.35, metalness: 0.3 });
+    const skidMat = new THREE.MeshStandardMaterial({ color: 0xc9d6e8, flatShading: true, roughness: 0.3, metalness: 0.6 }); // W6 §3.3
     for (const side of [-1, 1]) {
       const skid = new THREE.Mesh(new THREE.CapsuleGeometry(0.05, 1.0, 3, 8), skidMat);
       skid.rotation.x = Math.PI / 2;
@@ -158,7 +158,7 @@ export class PlayerTube {
       color: 0xffc933,
       flatShading: true,
       roughness: 0.3,
-      metalness: 0.3,
+      metalness: 0.6, // W6 §3.3: PMREM даёт отражение вместо черноты
       emissive: 0x664400,
       emissiveIntensity: 0.35,
     });

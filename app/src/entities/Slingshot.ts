@@ -175,8 +175,8 @@ export class Slingshot {
    * рожек и обвязка; тир 3 — золотая звезда и яркая гирлянда.
    */
   private buildTierDetails(): void {
-    // metalness низкий: без envMap металл рендерится чёрным
-    const metal = new THREE.MeshStandardMaterial({ color: 0x9fb2c8, flatShading: true, roughness: 0.35, metalness: 0.3 });
+    // W6 §3.3: PMREM-окружение подключено, металл можно вернуть
+    const metal = new THREE.MeshStandardMaterial({ color: 0x9fb2c8, flatShading: true, roughness: 0.3, metalness: 0.5 });
 
     if (this.glbMode) {
       // GLB-рамка асимметрична: хомуты фолбэка не лягут — тиры = звезда + огни гирлянды
@@ -184,7 +184,7 @@ export class Slingshot {
         color: 0xffc933,
         flatShading: true,
         roughness: 0.3,
-        metalness: 0.35,
+        metalness: 0.5, // W6 §3.3
         emissive: 0x8a5a00,
         emissiveIntensity: 0.5,
       });

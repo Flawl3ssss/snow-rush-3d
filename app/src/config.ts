@@ -530,6 +530,8 @@ export const LIGHTING = {
   fogNearMenu: 80,
   fogFarMenu: 600,
   toneExposure: 1.1,
+  /** W6 §3.3: сила PMREM-окружения. 0.5 — блики есть, но не «мокрый» вид. */
+  envIntensity: 0.5,
 } as const;
 
 // ---------- Визуал мира и VFX (world-graphics; design.md §2/§5/§6.1) ----------

@@ -19,6 +19,13 @@ export class Renderer {
   /** W6 §3.1: пост-обработка. null — если не поддержана (прямой render). */
   private postFX: PostFX | null = null;
   private postEnabled = true;
+  /** W6 §3.3: PMREM-окружение из неба (убирает «чёрный металл»). */
+  private pmrem: THREE.PMREMGenerator | null = null;
+  private envRT: THREE.WebGLRenderTarget | null = null;
+  private envDirty = false;
+  private envFallbackApplied = false;
+  private metalScanTimer = 0;
+  private envTimer = 0;
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -78,6 +85,7 @@ export class Renderer {
       lookForBiome('valley', { skyHorizon: COLORS.skyHorizon, skyZenith: COLORS.skyZenith }),
     );
     this.scene.add(this.sky.mesh);
+    this.refreshEnvironment();
 
     window.addEventListener('resize', this.handleResize);
     this.handleResize();
@@ -115,11 +123,93 @@ export class Renderer {
     this.renderer.toneMappingExposure = LIGHTING.toneExposure * palette.exposure;
 
     this.sky.setBiome(lookForBiome(biome, palette));
+    // окружение пересобираем на СЛЕДУЮЩЕМ кадре: setBiome стартует лерп,
+    // и мгновенная свёртка взяла бы ещё старые цвета
+    this.envDirty = true;
+  }
+
+  /**
+   * W6 §3.3: пересобрать scene.environment из текущего неба.
+   *
+   * Без envMap материалы с metalness>0 рендерятся почти чёрными — отсюда
+   * во всём проекте искусственно задавленная металличность (0.05–0.4) и
+   * комментарий в Slingshot «без envMap металл чёрный». PMREM снимает это
+   * ограничение.
+   *
+   * Стоимость: одна свёртка на биом, не на кадр. При сбое (нет WebGL2,
+   * SwiftShader) — тихо остаёмся без environment, картинка просто матовая.
+   */
+  private refreshEnvironment(): void {
+    try {
+      this.pmrem ??= new THREE.PMREMGenerator(this.renderer);
+      this.pmrem.compileEquirectangularShader();
+      // отдельная сцена: в окружение должно попасть ТОЛЬКО небо, иначе
+      // геометрия трассы «запечётся» в отражения и поедет вместе с игроком
+      const envScene = new THREE.Scene();
+      const skyClone = this.sky.mesh.clone();
+      skyClone.position.set(0, 0, 0);
+      envScene.add(skyClone);
+      const rt = this.pmrem.fromScene(envScene, 0.04);
+      this.envRT?.dispose();
+      this.envRT = rt;
+      this.scene.environment = rt.texture;
+      this.scene.environmentIntensity = LIGHTING.envIntensity;
+      envScene.remove(skyClone);
+    } catch (err) {
+      // Страховка: металличность в проекте поднята В РАСЧЁТЕ на envMap
+      // (монета 0.85, обод 0.6, рогатка 0.5). Без окружения такие материалы
+      // почернеют — это хуже, чем матовая картинка. Поэтому при сбое PMREM
+      // сбрасываем металл по всей сцене к безопасному потолку.
+      console.warn('[Renderer] PMREM недоступен — сбрасываю металличность', err);
+      this.scene.environment = null;
+      this.envFallbackApplied = true;
+      this.clampSceneMetalness();
+    }
+  }
+
+  /** Понизить metalness всех материалов сцены (fallback без envMap). */
+  private clampSceneMetalness(): void {
+    this.scene.traverse((o) => {
+      const mesh = o as THREE.Mesh;
+      if (!mesh.isMesh) return;
+      const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+      for (const m of mats) {
+        const std = m as THREE.MeshStandardMaterial;
+        if (std && 'metalness' in std && std.metalness > 0.2) {
+          std.metalness = 0.2;
+          std.needsUpdate = true;
+        }
+      }
+    });
+  }
+
+  /** true — окружение собрать не удалось, металличность принудительно снижена. */
+  get envDegraded(): boolean {
+    return this.envFallbackApplied;
   }
 
   /** Кадр неба: дрейф облаков и лерп палитры при смене биома. */
   updateSky(delta: number, time: number): void {
     this.sky.update(delta, time);
+    // Мир строится ПОСЛЕ конструктора Renderer, поэтому разовый clamp в
+    // catch не покрыл бы трассу, монеты и рогатку. В fallback-режиме
+    // проходим сцену раз в секунду — дёшево и ловит новые объекты.
+    if (this.envFallbackApplied) {
+      this.metalScanTimer += delta;
+      if (this.metalScanTimer >= 1) {
+        this.metalScanTimer = 0;
+        this.clampSceneMetalness();
+      }
+    }
+    // после смены биома ждём завершения лерпа (1 с) и пересобираем env один раз
+    if (this.envDirty) {
+      this.envTimer += delta;
+      if (this.envTimer >= 1.05) {
+        this.envDirty = false;
+        this.envTimer = 0;
+        this.refreshEnvironment();
+      }
+    }
   }
 
   /** Солнце следует за игроком, чтобы тени работали на всей трассе. */
@@ -165,6 +255,8 @@ export class Renderer {
   }
 
   dispose(): void {
+    this.envRT?.dispose();
+    this.pmrem?.dispose();
     this.sky.dispose();
     window.removeEventListener('resize', this.handleResize);
     this.renderer.dispose();
