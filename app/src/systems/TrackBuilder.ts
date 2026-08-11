@@ -20,6 +20,8 @@ export interface TrackContent {
   icePatches: IcePatch[];
   finishGate: FinishGate;
   windmillBlades: THREE.Object3D[];
+  /** W4: материалы факелов для мерцания огня. */
+  flickerMats: THREE.MeshStandardMaterial[];
 }
 
 interface PlacedObstacle {
@@ -71,6 +73,7 @@ export class TrackBuilder {
     const pads: BoostPad[] = [];
     const icePatches: IcePatch[] = [];
     const windmillBlades: THREE.Object3D[] = [];
+    const flickerMats: THREE.MeshStandardMaterial[] = [];
 
     const addObstacle = (kind: ObstacleKind, x: number, s: number): Obstacle => {
       const o = new Obstacle(kind, x, s);
@@ -281,8 +284,9 @@ export class TrackBuilder {
     const decor = buildWorldDecor(track, decorRng, placed);
     group.add(decor.group);
     for (const blades of decor.windmillBlades) windmillBlades.push(blades);
+    for (const m of decor.flickerMats) flickerMats.push(m);
 
-    return { group, obstacles, pickups, ramps, pads, icePatches, finishGate, windmillBlades };
+    return { group, obstacles, pickups, ramps, pads, icePatches, finishGate, windmillBlades, flickerMats };
   }
 
   /** Семейства по мин. дистанции появления (gdd §7.2). */

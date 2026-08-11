@@ -31,6 +31,8 @@ export interface WorldDecorResult {
   group: THREE.Group;
   /** Объекты, которые Game вращает (rotation.z): лопасти ветряков, лучи маяков. */
   windmillBlades: THREE.Object3D[];
+  /** W4: материалы с живым огнём (факелы) — Game мерцает emissiveIntensity. */
+  flickerMats: THREE.MeshStandardMaterial[];
 }
 
 interface ObstacleHint {
@@ -39,8 +41,24 @@ interface ObstacleHint {
   r: number;
 }
 
-/** Ветровое покачивание верхушек ёлок (shader-cookbook (c): амбиент, не геймплей). */
-function injectSway(mat: THREE.MeshStandardMaterial): void {
+/** Профиль ветрового покачивания: амплитуды и темп по типу декора. */
+interface SwayProfile {
+  /** Ключ кэша программы. ОБЯЗАН быть уникальным на профиль: Three кэширует
+   *  скомпилированный шейдер по этому ключу, и при совпадении ключей флаги
+   *  молча получат программу ёлок (амплитуда не изменится). */
+  key: string;
+  ampX: number;
+  ampZ: number;
+  freqX: number;
+  freqZ: number;
+}
+
+const SWAY_PINE: SwayProfile = { key: 'pine-wind-sway', ampX: 0.035, ampZ: 0.02, freqX: 1.4, freqZ: 1.1 };
+/** W4: ткань полощется заметно сильнее и чаще хвои. */
+const SWAY_FLAG: SwayProfile = { key: 'flag-wind-sway', ampX: 0.075, ampZ: 0.045, freqX: 2.6, freqZ: 2.1 };
+
+/** Ветровое покачивание (shader-cookbook (c): амбиент, не геймплей). */
+function injectSway(mat: THREE.MeshStandardMaterial, profile: SwayProfile = SWAY_PINE): void {
   mat.onBeforeCompile = (shader) => {
     shader.uniforms.uTime = { value: 0 };
     mat.userData.shader = shader;
@@ -55,11 +73,11 @@ function injectSway(mat: THREE.MeshStandardMaterial): void {
            float swayPhase = 0.0;
          #endif
          float swayH = max(position.y, 0.0);
-         transformed.x += sin(uTime * 1.4 + swayPhase) * 0.035 * swayH;
-         transformed.z += cos(uTime * 1.1 + swayPhase) * 0.02 * swayH;`,
+         transformed.x += sin(uTime * ${profile.freqX.toFixed(2)} + swayPhase) * ${profile.ampX.toFixed(3)} * swayH;
+         transformed.z += cos(uTime * ${profile.freqZ.toFixed(2)} + swayPhase) * ${profile.ampZ.toFixed(3)} * swayH;`,
       );
   };
-  mat.customProgramCacheKey = () => 'pine-wind-sway';
+  mat.customProgramCacheKey = () => profile.key;
 }
 
 function makeSwayMaterial(base: THREE.MeshStandardMaterial): THREE.MeshStandardMaterial {
@@ -78,6 +96,7 @@ function glbInstanced(
   tints: THREE.Color[] | null,
   castShadow: boolean,
   sway: boolean,
+  swayProfile: SwayProfile = SWAY_PINE,
 ): THREE.Group | null {
   if (!AssetLib.has(model) || matrices.length === 0) return null;
   const g = new THREE.Group();
@@ -85,7 +104,7 @@ function glbInstanced(
     let mat = part.material as THREE.MeshStandardMaterial;
     if (sway) {
       mat = mat.clone();
-      injectSway(mat);
+      injectSway(mat, swayProfile);
     }
     const mesh = new THREE.InstancedMesh(part.geometry, mat, matrices.length);
     matrices.forEach((m, i) => {
@@ -137,6 +156,7 @@ export function buildWorldDecor(
   group.name = 'worldDecor';
   const mats = createWorldMaterials();
   const windmillBlades: THREE.Object3D[] = [];
+  const flickerMats: THREE.MeshStandardMaterial[] = [];
   const dummy = new THREE.Object3D();
   const tmpPos = new THREE.Vector3();
 
@@ -240,7 +260,7 @@ export function buildWorldDecor(
       const side = Math.floor(s / 14) % 2 === 0 ? -1 : 1; // шахматный порядок
       flagMatrices.push(place(side * (TRACK.halfW + 0.9), s, 0.55, side > 0 ? Math.PI : 0));
     }
-    const flags = glbInstanced('flag', flagMatrices, null, false, false);
+    const flags = glbInstanced('flag', flagMatrices, null, false, true, SWAY_FLAG);
     if (flags) group.add(flags);
   }
 
@@ -255,7 +275,24 @@ export function buildWorldDecor(
       torchMatrices.push(place(side * (TRACK.halfW + 1.4), s, 1, side > 0 ? Math.PI : 0));
     }
     const torches = glbInstanced('torch', torchMatrices, null, false, false);
-    if (torches) group.add(torches);
+    if (torches) {
+      // W4: материалы клонируем — AssetLib отдаёт общий инстанс материала,
+      // и правка emissiveIntensity «на месте» протекла бы на другие модели.
+      torches.traverse((o) => {
+        const mesh = o as THREE.Mesh;
+        if (!mesh.isMesh) return;
+        const src = mesh.material as THREE.MeshStandardMaterial;
+        if (!src || !src.isMeshStandardMaterial) return;
+        const m = src.clone();
+        // пламя должно светиться даже если в исходной модели emissive пуст
+        if (m.emissive.getHex() === 0x000000) m.emissive.setHex(0xff7a2a);
+        m.emissiveIntensity = 1.1;
+        m.userData.flickerPhase = Math.random() * Math.PI * 2;
+        mesh.material = m;
+        flickerMats.push(m);
+      });
+      group.add(torches);
+    }
   }
 
   // Пещеры: светящиеся кристаллы у стен
@@ -439,5 +476,5 @@ export function buildWorldDecor(
   garland.position.y += 3.3;
   group.add(garland);
 
-  return { group, windmillBlades };
+  return { group, windmillBlades, flickerMats };
 }

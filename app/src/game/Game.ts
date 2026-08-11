@@ -85,6 +85,8 @@ export class Game {
   // --- time control ---
   private timeScale = 1;
   private hitstopRemaining = 0;
+  /** W4: качество последнего приземления (land_clean/land_hard → сила squash). */
+  private landQuality: 'clean' | 'hard' | 'normal' = 'normal';
   private slowMoRemaining = 0;
   private accumulator = 0;
 
@@ -446,6 +448,7 @@ export class Game {
     this.launchSpeed = SLINGSHOT.launchSpeed(p, this.meta.getUpgradeLevel('slingshot'));
     this.launchFrom.copy(this.tube.group.position);
     this.bus.emit('launched', { power: p, speed: this.launchSpeed });
+    this.landQuality = 'normal'; // W4: не тащить качество из прошлого заезда
     // squash & stretch + FOV-кик + trauma (design.md §6.1)
     this.tube.squash(this.tweens, 1.15, 0.18);
     this.cameraRig.punchFov(6);
@@ -656,9 +659,32 @@ export class Game {
       this.tube.squash(this.tweens, 1.15, 0.18);
       this.cameraRig.punchFov(4);
     });
+    // W4: сила squash зависит от качества приземления (RunSession уже
+    // различает land_clean/land_hard по углу входа vs уклону склона).
+    // Порядок событий в RunSession: land_clean|land_hard → land, поэтому
+    // качество запоминаем флагом и потребляем в обработчике 'land'.
+    this.bus.on('land_clean', () => {
+      this.landQuality = 'clean';
+    });
+    this.bus.on('land_hard', () => {
+      this.landQuality = 'hard';
+    });
     this.bus.on('land', () => {
-      this.tube.squash(this.tweens, 0.9, 0.18);
-      this.shake.addTrauma(PHYSICS.ramp.landTrauma);
+      const q = this.landQuality;
+      this.landQuality = 'normal';
+      if (q === 'clean') {
+        // чистое приземление — лёгкая упругая просадка, без тряски сверх нормы
+        this.tube.squash(this.tweens, 0.92, 0.14);
+        this.shake.addTrauma(PHYSICS.ramp.landTrauma * 0.7);
+      } else if (q === 'hard') {
+        // жёсткое — глубокий и долгий squash + усиленная встряска
+        this.tube.squash(this.tweens, 0.78, 0.25);
+        this.shake.addTrauma(PHYSICS.ramp.landTrauma * 1.6);
+        this.cameraRig.punchFov(-2);
+      } else {
+        this.tube.squash(this.tweens, 0.9, 0.18);
+        this.shake.addTrauma(PHYSICS.ramp.landTrauma);
+      }
     });
     this.bus.on('finish', () => {
       this.flashWhite();
@@ -777,7 +803,7 @@ export class Game {
       this.tube.group.rotation.x = -degToRad(this.track.slopeDegAt(s.s)) * 0.5;
       this.tube.setBoosting(s.boosting && this.state === 'run');
       if (this.state !== 'crash') {
-        this.tube.updateVisual(delta, time, s.steer, s.vx, s.onIce, s.airborne);
+        this.tube.updateVisual(delta, time, s.steer, s.vx, s.onIce, s.airborne, s.v, s.vy);
       }
     } else {
       this.tube.setBoosting(false);
@@ -806,6 +832,13 @@ export class Game {
       }
       this.content.finishGate.update(time);
       for (const blades of this.content.windmillBlades) blades.rotation.z += delta * 0.8;
+      // W4: живой огонь факелов — две несоизмеримые синусоиды (11 и 6.3 Гц)
+      // дают апериодичное мерцание без RNG, то есть детерминированно.
+      for (const m of this.content.flickerMats) {
+        const ph = (m.userData.flickerPhase as number) ?? 0;
+        m.emissiveIntensity =
+          1.1 + Math.sin(time * 11 + ph) * 0.25 + Math.sin(time * 6.3 + ph * 1.7) * 0.1;
+      }
     }
   }
 

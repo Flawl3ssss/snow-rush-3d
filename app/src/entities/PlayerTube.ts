@@ -5,6 +5,7 @@ import { Penguin } from './Penguin';
 import type { TweenManager } from '@/utils/tween';
 import { easeOutBack } from '@/utils/tween';
 import { vfxHub } from '@/world/vfxHub';
+import { clamp } from '@/utils/math';
 
 /**
  * PlayerTube — пингвин в тюбинге. Визуальная иерархия (контракт scaffold):
@@ -23,6 +24,7 @@ export class PlayerTube {
 
   private roll = 0;
   private pitch = 0;
+  private airPitch = 0; // W4: сглаженный подъём носа в полёте (∝ vy)
   private tumbleAngle = 0;
   private tumbleVelocity = 0;
   private tumbling = false;
@@ -206,15 +208,35 @@ export class PlayerTube {
     this.boostFlame.visible = on;
   }
 
-  /** Крейсерская анимация (design.md §6.1): roll ±3°→−12° от стеринга, bob 2.2 Гц. */
-  updateVisual(dt: number, time: number, steer: number, vx: number, onIce: boolean, airborne = false): void {
+  /**
+   * Крейсерская анимация (design.md §6.1): roll ±3°→−12° от стеринга, bob 2.2 Гц.
+   * W4: сверху — непрерывный воббл ∝ скорости (тюб «живой» даже на прямой)
+   * и подъём носа в полёте ∝ vy (баллистическая поза вместо статичной).
+   */
+  updateVisual(
+    dt: number,
+    time: number,
+    steer: number,
+    vx: number,
+    onIce: boolean,
+    airborne = false,
+    speed = 0,
+    vy = 0,
+  ): void {
     const targetRoll = -steer * 0.21; // до −12°
     this.roll += (targetRoll - this.roll) * Math.min(1, 8 * dt);
-    this.bodyNode.rotation.z = this.roll;
+    // W4: воббл — частота и амплитуда растут со скоростью; на льду тише
+    // (скольжение ровнее, чем по рыхлому снегу).
+    const wobbleAmp = 0.02 * Math.min(1, speed / 20) * (onIce ? 0.5 : 1);
+    const wobble = Math.sin(time * (4 + speed * 0.12)) * wobbleAmp;
+    this.bodyNode.rotation.z = this.roll + (airborne ? 0 : wobble);
     // pitch +2° при торможении рулением о снег (design §6.1)
     const targetPitch = Math.abs(steer) * 0.035;
     this.pitch += (targetPitch - this.pitch) * Math.min(1, 6 * dt);
-    this.bodyNode.rotation.x = this.pitch;
+    // W4: в полёте нос вверх на подъёме, вниз на падении (clamp −0.15…+0.25)
+    const targetAirPitch = airborne ? clamp(vy * 0.02, -0.15, 0.25) : 0;
+    this.airPitch += (targetAirPitch - this.airPitch) * Math.min(1, 5 * dt);
+    this.bodyNode.rotation.x = this.pitch + this.airPitch;
     const bobAmp = onIce ? 0.015 : 0.04;
     this.bodyNode.position.y = airborne ? 0 : Math.sin(time * 2.2 * Math.PI * 2) * bobAmp;
     const excitement = Math.min(1, Math.abs(vx) / 6 + Math.abs(steer) * 0.5);
