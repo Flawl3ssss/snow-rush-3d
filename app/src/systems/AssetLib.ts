@@ -72,13 +72,22 @@ const MODEL_FILES: Record<ModelName, string> = {
   cabin: 'cabin',
 };
 
+/**
+ * Модели, не участвующие в 3D-сцене: сундук и ракета отрисовываются на
+ * DOM-экранах (ChestScreen/HUD) обычными PNG-иконками. Их GLB висели в
+ * блокирующем preload и тянули ~1.2 МБ на старте впустую. Файлы оставлены
+ * в public/models — при переносе экрана сундука в 3D достаточно убрать имя
+ * из этого списка.
+ */
+const PRELOAD_SKIP: ReadonlySet<string> = new Set<ModelName>(['chest', 'rocket']);
+
 export class AssetLib {
   private static prototypes = new Map<ModelName, THREE.Group>();
   private static loader = new GLTFLoader();
 
   /** Предзагрузка всех моделей; onProgress(0..1) для лоадера. Сбой одной модели не роняет остальные. */
   static async preload(onProgress?: (t: number) => void): Promise<void> {
-    const names = Object.keys(MODEL_SPECS) as ModelName[];
+    const names = (Object.keys(MODEL_SPECS) as ModelName[]).filter((n) => !PRELOAD_SKIP.has(n));
     let done = 0;
     await Promise.all(
       names.map(async (name) => {

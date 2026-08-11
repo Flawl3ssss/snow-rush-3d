@@ -113,10 +113,18 @@ export class ChestScreen extends ModalScreen {
       return;
     }
     meta.emitMetaEvent(this.game.bus, 'chest_opened', reward);
-    // squash 0.85 180 мс → открытый сундук + вспышка (ui.md §3.8)
+    // W4 §2.2: плановый «поворот ноды крышки GLB» здесь неприменим — экран
+    // сундука DOM-овый (PNG-иконки), 3D-сцены на нём нет. Эквивалент замаха
+    // даём на CSS: приседание с наклоном (анти-упреждение) → рывок вверх
+    // с overshoot по easeOutBack → возврат. Читается как «крышку сорвало».
     this.chestImg.animate(
-      [{ transform: 'scaleY(1)' }, { transform: 'scaleY(0.85)' }, { transform: 'scaleY(1)' }],
-      { duration: 180, easing: 'ease-out' },
+      [
+        { transform: 'scaleY(1) rotate(0deg) translateY(0)', offset: 0 },
+        { transform: 'scaleY(0.82) scaleX(1.08) rotate(-3deg) translateY(4px)', offset: 0.35 },
+        { transform: 'scaleY(1.14) scaleX(0.94) rotate(2deg) translateY(-10px)', offset: 0.72 },
+        { transform: 'scaleY(1) rotate(0deg) translateY(0)', offset: 1 },
+      ],
+      { duration: 420, easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)' },
     ).onfinish = () => {
       this.chestImg.src = '/icon-chest-open.png';
       this.chestImg.style.display = '';

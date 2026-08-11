@@ -807,6 +807,11 @@ export class Game {
       }
     } else {
       this.tube.setBoosting(false);
+      // W4 §2.5: в menu/aim заезда нет, но герой должен жить — раньше
+      // updateVisual вызывался только в run/finish/crash, поэтому пингвин
+      // в меню стоял абсолютно неподвижным манекеном (дыхание и озиралка
+      // внутри Penguin.animate просто никогда не тикали).
+      this.tube.updateVisual(delta, time, 0, 0, false, false, 0, 0);
     }
     // пикапы: вращение + магнит
     if (this.content) {
