@@ -152,8 +152,12 @@ export const CAMERA = {
   menuBobAmp: 0.05,
   menuBobHz: 0.3,
   /** W5: крен камеры ∝ боковой скорости (до rollMaxDeg), look-ahead ∝ v. */
-  rollMul: 0.045,
+  // rollMul подобран под maxVx=9: 9·0.0155 ≈ 0.14 рад ≈ 8° точно на пределе
+  // руления, поэтому крен растёт пропорционально, а не упирается в кламп
+  // уже на трети боковой скорости.
+  rollMul: 0.0155,
   rollMaxDeg: 8,
+  rollDamp: 6,
   lookAheadSpeedMul: 0.25,
   lookAheadSpeedMax: 8,
   airPosLag: 2.6, // ослабленный демпфинг в полёте

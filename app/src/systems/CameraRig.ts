@@ -55,6 +55,11 @@ export class CameraRig {
     this.shakeRigTraumaPulse = active ? 1 : 0;
   }
 
+  /** Текущая добавка крена в радианах (для дебага и headless-замеров W5). */
+  get rollRad(): number {
+    return this.roll;
+  }
+
   snapToMode(): void {
     // мгновенная установка при смене состояния (без резкого пролёта)
     this.camera.position.copy(this.desiredPos);
@@ -136,7 +141,7 @@ export class CameraRig {
 
     this.camera.lookAt(this.smoothedLook);
     // W5: плавный крен камеры (rollTarget задаётся в run-ветке, иначе 0)
-    this.roll = lerp(this.roll, this.rollTarget, damp(6, delta));
+    this.roll = lerp(this.roll, this.rollTarget, damp(CAMERA.rollDamp, delta));
     this.camera.rotation.z += this.roll;
 
     // --- FOV ---
