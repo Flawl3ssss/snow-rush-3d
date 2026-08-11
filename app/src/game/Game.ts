@@ -782,6 +782,8 @@ export class Game {
 
     // --- свет следует за игроком, снег вокруг камеры ---
     this.renderer.followTarget(playerPos.x, playerPos.y, playerPos.z);
+    // W6 §3.1: скоростная виньетка/размытие — только в заезде
+    this.renderer.setSpeedFx(this.state === 'run' ? (this.session?.v ?? 0) / 40 : 0);
     this.snow?.update(delta, elapsed, this.renderer.camera.position, {
       boosting: this.session?.boosting ?? false,
       airborne: this.session?.airborne ?? false,

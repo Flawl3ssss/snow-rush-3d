@@ -166,6 +166,19 @@ export const CAMERA = {
   finish: { offset: { x: 2.5, y: 2.0, z: 4.5 }, fovDelta: -6, duration: 0.6, slowMo: 0.35 },
 } as const;
 
+// ---------- Пост-обработка (W6 §3.1) ----------
+export const BLOOM = {
+  strength: 0.45,
+  radius: 0.35,
+  threshold: 0.88, // только самые яркие: солнце, монеты, лава, кристаллы
+} as const;
+
+/** Скоростная виньетка/размытие (W6 §3.1): вкл плавно от start (норма 0..1). */
+export const SPEED_FX = {
+  vignette: 0.12,
+  start: 28 / 40, // ~28 м/с на фоне топ-40 — лёгкий эффект только на скорости
+} as const;
+
 // ---------- Пикапы (gdd.md §4.6) ----------
 export const PICKUPS = {
   coinRadius: 1.1,

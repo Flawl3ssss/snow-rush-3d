@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { COLORS, LIGHTING } from '@/config';
 import type { MapPalette } from '@/config';
+import { PostFX } from '@/systems/PostFX';
 
 /**
  * Renderer — WebGL renderer + сцена + свет/небо/туман по design.md §5.
@@ -14,6 +15,9 @@ export class Renderer {
   private readonly hemi: THREE.HemisphereLight;
   private readonly skyMesh: THREE.Mesh;
   private readonly container: HTMLElement;
+  /** W6 §3.1: пост-обработка. null — если не поддержана (прямой render). */
+  private postFX: PostFX | null = null;
+  private postEnabled = true;
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -71,6 +75,26 @@ export class Renderer {
 
     window.addEventListener('resize', this.handleResize);
     this.handleResize();
+
+    // W6 §3.1: composer собираем после первого resize — ему нужен реальный
+    // размер канваса. degraded → остаётся прямой renderer.render().
+    const fx = new PostFX(this.renderer, this.scene, this.camera);
+    this.postFX = fx.degraded ? null : fx;
+    if (this.postFX) {
+      const w = this.container.clientWidth || window.innerWidth;
+      const h = this.container.clientHeight || window.innerHeight;
+      this.postFX.setSize(w, h);
+    }
+  }
+
+  /** Настройки: отключение пост-обработки (низкий FPS / reduced motion). */
+  setPostEnabled(on: boolean): void {
+    this.postEnabled = on;
+  }
+
+  /** W6 §3.1: нормированная скорость 0..1 для скоростной виньетки. */
+  setSpeedFx(norm: number): void {
+    this.postFX?.setSpeed(norm);
   }
 
   private createSky(): THREE.Mesh {
@@ -162,10 +186,15 @@ export class Renderer {
     this.renderer.setSize(w, h, false);
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
+    this.postFX?.setSize(w, h);
   };
 
   render(): void {
-    this.renderer.render(this.scene, this.camera);
+    if (this.postFX && this.postEnabled) {
+      this.postFX.render();
+    } else {
+      this.renderer.render(this.scene, this.camera);
+    }
   }
 
   dispose(): void {
