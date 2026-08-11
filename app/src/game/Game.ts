@@ -225,7 +225,7 @@ export class Game {
     this.runSeedBase = map.seed;
     this.track = new Track(this.meta.finishDistance, map.seed, map.palette, map.track);
     this.renderer.scene.add(this.track.group);
-    this.renderer.applyBiome(map.palette);
+    this.renderer.applyBiome(map.palette, map.track.biome);
 
     // Рогатка на стартовой площадке
     this.track.worldPos(0, -2, 0, this.slingshotBase);
@@ -782,6 +782,7 @@ export class Game {
 
     // --- свет следует за игроком, снег вокруг камеры ---
     this.renderer.followTarget(playerPos.x, playerPos.y, playerPos.z);
+    this.renderer.updateSky(delta, elapsed); // W6 §3.2: дрейф облаков + лерп биома
     // W6 §3.1: скоростная виньетка/размытие — только в заезде
     this.renderer.setSpeedFx(this.state === 'run' ? (this.session?.v ?? 0) / 40 : 0);
     this.snow?.update(delta, elapsed, this.renderer.camera.position, {
